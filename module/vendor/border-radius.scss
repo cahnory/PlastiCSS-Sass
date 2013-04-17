@@ -1,0 +1,38 @@
+// @module vendor:border-radius
+//
+// @mixin border-radius
+
+// Return used prefixes list
+@function vendor-border-radius-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(4, false)
+   or support-safari(5, false)
+   or support-android((2,2), false)
+   or support-safari-ios(4, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(4, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+
+// Mixin
+@mixin border-radius($value...) {
+  @include vendor-prefix(
+    border-radius,
+    $value,
+    vendor-border-radius-prefixes()
+  );
+}

@@ -1,0 +1,47 @@
+// Make element out of sight
+@mixin outsight {
+  border: none;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+%outsight {
+  @include outsight;
+}
+
+// Make element text out of sight
+@mixin outsight-text {
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+}
+%outsight-text {
+  @include outsight-text;
+}
+
+// Clear on floats container
+@mixin clear($clear: both) {
+  @if support-ie(8, false) {
+    *zoom: 1;
+  }
+
+  &:after {
+    clear:    $clear;
+    content:  $utf-nbsp;
+    display: block;
+    height: 0;
+  }
+}
+%clear-left {
+  @include clear(left);
+}
+%clear-right {
+  @include clear(right);
+}
+%clear-both {
+  @include clear(both);
+}

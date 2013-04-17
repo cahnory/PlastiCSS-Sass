@@ -1,0 +1,46 @@
+// @module vendor:animation
+//
+// @mixin animation
+
+// Return used prefixes list
+@function vendor-animation-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(none, false)
+   or support-safari(none, false)
+   or support-android(none, false)
+   or support-blackberry(none, false)
+   or support-safari-ios(none, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(16, false)
+   or support-firefox-mobile(16, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Add "o" prefix if needed
+  @if support-opera((12,10), false)
+  {
+    $prefixes: append($prefixes, o);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+
+// Mixin
+@mixin animation($value...) {
+  @include vendor-prefix(
+    animation,
+    $value,
+    vendor-animation-prefixes()
+  );
+}

@@ -1,0 +1,126 @@
+// @module vendor:border-image
+//
+// @mixin border-image
+// @mixin border-top-image
+// @mixin border-top-right-image
+// @mixin border-right-image
+// @mixin border-bottom-right-image
+// @mixin border-bottom-image
+// @mixin border-bottom-left-image
+// @mixin border-left-image
+// @mixin border-top-left-image
+// @mixin border-corder-image
+
+// Return used prefixes list
+@function vendor-border-image-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(20, false)
+   or support-safari(6, false)
+   or support-android(none, false)
+   or support-blackberry(10, false)
+   or support-safari-ios(none, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(15, false)
+   or support-firefox-mobile(none, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Add "o" prefix if needed
+  @if support-opera(none, false)
+  {
+    $prefixes: append($prefixes, o);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+// Mixins
+@mixin border-image($value...) {
+  @include vendor-prefix(
+    border-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-top-image($value...) {
+  @include vendor-prefix(
+    border-top-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-top-right-image($value...) {
+  @include vendor-prefix(
+    border-top-right-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-right-image($value...) {
+  @include vendor-prefix(
+    border-right-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-bottom-right-image($value...) {
+  @include vendor-prefix(
+    border-bottom-right-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-bottom-image($value...) {
+  @include vendor-prefix(
+    border-bottom-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-bottom-left-image($value...) {
+  @include vendor-prefix(
+    border-bottom-left-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-left-image($value...) {
+  @include vendor-prefix(
+    border-left-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-top-left-image($value...) {
+  @include vendor-prefix(
+    border-top-left-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}
+
+@mixin border-corner-image($value...) {
+  @include vendor-prefix(
+    border-corner-image,
+    $value,
+    vendor-border-image-prefixes()
+  );
+}

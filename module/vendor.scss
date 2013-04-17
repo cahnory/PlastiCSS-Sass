@@ -1,0 +1,20 @@
+@mixin vendor-prefix($property, $values, $prefixes: (webkit, moz, o, none)) {
+  @each $prefix in $prefixes {
+    @if $prefix != none {
+      @include autoRem(-#{$prefix}-#{$property}, $values...);
+    }
+    @else {
+      @include autoRem($property, $values...);
+    }
+  }
+}
+
+@import 'vendor/align.scss';
+@import 'vendor/animation.scss';
+@import 'vendor/background-size.scss';
+@import 'vendor/border-image.scss';
+@import 'vendor/border-radius.scss';
+@import 'vendor/box-shadow.scss';
+@import 'vendor/box-sizing.scss';
+@import 'vendor/column.scss';
+@import 'vendor/display.scss';

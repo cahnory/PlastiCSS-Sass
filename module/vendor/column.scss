@@ -1,0 +1,120 @@
+// @module vendor:column
+//
+// @mixin column-count
+// @mixin column-fill
+// @mixin column-gap
+// @mixin column-rule
+// @mixin column-rule-color
+// @mixin column-rule-style
+// @mixin column-rule-width
+// @mixin column-span
+// @mixin column-width
+// @mixin columns
+
+// Return used prefixes list
+@function vendor-column-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(none, false)
+   or support-safari(none, false)
+   or support-android(none, false)
+   or support-blackberry(none, false)
+   or support-safari-ios(none, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(none, false)
+   or support-firefox-mobile(none, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+// Mixins
+@mixin column-count($value...) {
+  @include vendor-prefix(
+    column-count,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-fill($value...) {
+  @include vendor-prefix(
+    column-fill,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-gap($value...) {
+  @include vendor-prefix(
+    column-gap,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-rule($value...) {
+  @include vendor-prefix(
+    column-rule,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-rule-color($value...) {
+  @include vendor-prefix(
+    column-rule-color,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-rule-style($value...) {
+  @include vendor-prefix(
+    column-rule-style,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-rule-width($value...) {
+  @include vendor-prefix(
+    column-rule-width,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-span($value...) {
+  @include vendor-prefix(
+    column-span,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin column-width($value...) {
+  @include vendor-prefix(
+    column-width,
+    $value,
+    vendor-column-prefixes()
+  );
+}
+
+@mixin columns($value...) {
+  @include vendor-prefix(
+    columns,
+    $value,
+    vendor-column-prefixes()
+  );
+}

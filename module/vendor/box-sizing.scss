@@ -1,0 +1,38 @@
+// @module vendor:box-sizing
+//
+// @mixin box-sizing
+
+// Return used prefixes list
+@function vendor-bos-sizing-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(9, false)
+   or support-safari((5,1), false)
+   or support-android(4, false)
+   or support-blackberry(10, false)
+   or support-safari-ios(5, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(none, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+// Mixin
+@mixin box-sizing($value...) {
+  @include vendor-prefix(
+    box-sizing,
+    $value,
+    vendor-bos-sizing-prefixes()
+  );
+}

@@ -1,0 +1,38 @@
+// @module vendor:box-shadow
+//
+// @mixin box-shadow
+
+// Return used prefixes list
+@function vendor-box-shadow-prefixes() {
+  $prefixes: ();
+
+  // Add "webkit" prefix if needed
+  @if support-chrome(10, false)
+   or support-safari((5,1), false)
+   or support-android(4, false)
+   or support-blackberry(10, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(4, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+
+// Mixin
+@mixin box-shadow($value...) {
+  @include vendor-prefix(
+    box-shadow,
+    $value,
+    vendor-box-shadow-prefixes()
+  );
+}

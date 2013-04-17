@@ -1,0 +1,111 @@
+$cfg-rem-size:  10px !default;
+$cfg-rem-px:    1px !default;
+$cfg-rem-auto:  true !default;
+
+$rem-font-size: 100% / 16px * $cfg-rem-size;
+
+// Remove number unit
+//
+// @param number $value
+// @return number
+@function removeUnit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+// Convert single re value to px
+//
+// @param number $value
+// @return number
+@function pxToRem($value) {
+  @if type-of($value) == 'number' and unit($value) == 'px' {
+    $value: removeUnit($value) / removeUnit($cfg-rem-size) + rem;
+  }
+  @return $value;
+}
+
+// Convert any px value in the list to rem
+//
+// @param number $value
+// @return number
+@function toRem($list, $rest...) {
+  $output: $list;
+
+  // Single value
+  @if length($list) == 1 {
+    $output: pxToRem($list);
+  }
+
+  // Spaced values
+  @else {
+    $output: ();
+    @each $value in $list {
+      $output: append($output, toRem($value));
+    }
+  }
+
+  // Comma separated values
+  @each $value in $rest {
+    $output: $output, toRem($value);
+  }
+
+  @return $output;
+}
+
+// Convert single px value to rem
+//
+// @param number $value
+// @return number
+@function remToPx($value) {
+  @if type-of($value) == 'number' and unit($value) == 'rem' {
+    $value: removeUnit($value) * removeUnit($cfg-rem-size) + px;
+  }
+  @return $value;
+}
+
+// Convert any rem value in the list to px
+//
+// @param number $value
+// @return number
+@function toPx($list, $rest...) {
+  $output: $list;
+
+  // Single value
+  @if length($list) == 1 {
+    $output: remToPx($list);
+  }
+
+  // Spaced values
+  @else {
+    $output: ();
+    @each $value in $list {
+      $output: append($output, toPx($value));
+    }
+  }
+
+  // Comma separated values
+  @each $value in $rest {
+    $output: $output, toPx($value);
+  }
+
+  @return $output;
+}
+
+// Set a property. If values list contains rem values, 
+// an alternate declaration version is set with rem 
+// values converted to px.
+@mixin rem($property, $rem...) {
+  $px: toPx($rem...);
+  @if $px != $rem {
+    #{$property}: $px;
+  }
+  #{$property}: $rem;
+}
+
+@mixin autoRem($property, $rem...) {
+  @if $cfg-rem-auto {
+    @include rem($property, $rem...);
+  }
+  @else {
+    #{$property}: $rem;
+  }
+}

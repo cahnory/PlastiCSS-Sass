@@ -1,0 +1,34 @@
+// @module vendor:display
+//
+// @mixin display
+
+// Mixin
+@mixin display($value...) {
+  // Inline-block workarounds
+  @if $value == inline-block {
+    // Firefox < 3
+    @if support-firefox(3, false) {
+      display: -moz-inline-box;
+    }
+    // Standard
+    display: inline-block;
+    // IE < 8
+    @if support-chrome(8, false) {
+      *display: inline;
+      *zoom: 1;
+    }
+  }
+  
+  // Flex: need informations
+  @else if $value == flex {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
+  @else {
+    display: $value;
+  }
+}

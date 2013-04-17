@@ -1,0 +1,42 @@
+// @module vendor:background-size
+//
+// @mixin background-size
+
+// Return used prefixes list
+@function vendor-background-size-prefixes() {
+  $prefixes: ();
+  
+  // Add "webkit" prefix if needed
+  @if support-chrome(3, false)
+   or support-safari((4,1), false)
+   or vendor-android(none, false)
+  {
+    $prefixes: append($prefixes, webkit);
+  }
+  
+  // Add "moz" prefix if needed
+  @if support-firefox(4, false)
+  {
+    $prefixes: append($prefixes, moz);
+  }
+  
+  // Add "o" prefix if needed
+  @if support-opera(10, false)
+  {
+    $prefixes: append($prefixes, o);
+  }
+  
+  // Last but not least: unprefixed
+  $prefixes: append($prefixes, none);
+
+  @return $prefixes;
+}
+
+// Mixin
+@mixin background-size($value...) {
+  @include vendor-prefix(
+    background-size,
+    $value,
+    vendor-background-size-prefixes()
+  );
+}

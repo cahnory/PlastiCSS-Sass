@@ -1,0 +1,34 @@
+// @module vendor:column
+//
+// @mixin align-content
+// @mixin align-items
+// @mixin align-self
+
+// Return used prefixes list
+@function vendor-align-prefixes() {
+  @return (webkit, none);
+}
+
+
+// Mixins
+@mixin align-content($value...) {
+  @include vendor-prefix(
+    align-content,
+    $value,
+    vendor-align-prefixes()
+  );
+}
+@mixin align-items($value...) {
+  @include vendor-prefix(
+    align-items,
+    $value,
+    vendor-align-prefixes()
+  );
+}
+@mixin align-self($value...) {
+  @include vendor-prefix(
+    align-self,
+    $value,
+    vendor-align-prefixes()
+  );
+}

@@ -1,0 +1,60 @@
+// Desktop support
+$cfg-support-chrome:         0 !default;
+$cfg-support-firefox:        0 !default;
+$cfg-support-ie:             0 !default;
+$cfg-support-opera:          0 !default;
+$cfg-support-safari:         0 !default;
+
+// Mobile support
+$cfg-support-android:        0 !default;
+$cfg-support-blackberry:     0 !default;
+$cfg-support-firefox-mobile: 0 !default;
+$cfg-support-opera-mini:     0 !default;
+$cfg-support-opera-mobile:   0 !default;
+$cfg-support-safari-ios:     0 !default;
+
+@function support($supported, $version, $equal: true) {
+  $ls: length($supported);
+  $lv: length($version);
+  $min: min($ls, $lv);
+  $i: 1;
+
+  // Browser not supported
+  @if $supported == none {
+    @return false;
+  }
+
+  // Apply to all versions
+  @else if $version == none {
+    @return true;
+  }
+
+  // Check if version is supported
+  @while $i <= $min {
+    $s: nth($supported, $i);
+    $v: nth($version, $i);
+    $i: $i + 1;
+
+    @if $s < $v {
+      @return true;
+    }
+    @else if $s > $v {
+      @return false;
+    }
+  }
+
+  @return $ls < $lv or $equal and $ls == $lv;
+}
+
+@function support-chrome        ($version, $equal: true)  { @return support($cfg-support-chrome,          $version, $equal) }
+@function support-firefox       ($version, $equal: true)  { @return support($cfg-support-firefox,         $version, $equal) }
+@function support-ie            ($version, $equal: true)  { @return support($cfg-support-ie,              $version, $equal) }
+@function support-opera         ($version, $equal: true)  { @return support($cfg-support-opera,           $version, $equal) }
+@function support-safari        ($version, $equal: true)  { @return support($cfg-support-safari,          $version, $equal) }
+
+@function support-android       ($version, $equal: true)  { @return support($cfg-support-android,         $version, $equal) }
+@function support-blackberry    ($version, $equal: true)  { @return support($cfg-support-blackberry,      $version, $equal) }
+@function support-firefox-mobile($version, $equal: true)  { @return support($cfg-support-firefox-mobile,  $version, $equal) }
+@function support-opera-mini    ($version, $equal: true)  { @return support($cfg-support-opera-mini,      $version, $equal) }
+@function support-opera-mobile  ($version, $equal: true)  { @return support($cfg-support-opera-mobile,    $version, $equal) }
+@function support-safari-ios    ($version, $equal: true)  { @return support($cfg-support-safari-ios,      $version, $equal) }
