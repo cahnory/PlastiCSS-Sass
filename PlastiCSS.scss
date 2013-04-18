@@ -85,7 +85,7 @@ $PlastiCSS-credits: 'PlastiCSS by François Germain - https://github.com/cahnory
     }
     $offset: $offset + 1;
   }
-  
+
   @if length($new) == 0 {
     @return null;
   }
