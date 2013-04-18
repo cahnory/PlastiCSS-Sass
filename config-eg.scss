@@ -1,0 +1,21 @@
+// Rem unit
+$cfg-rem-size:                1px;
+$cfg-rem-auto:                true !default;
+
+// Em unit
+$cfg-em-size:                 16px !default;
+
+// Supported desktop browsers
+$cfg-support-chrome:          0 !default;
+$cfg-support-firefox:         0 !default;
+$cfg-support-ie:              0 !default;
+$cfg-support-opera:           0 !default;
+$cfg-support-safari:          0 !default;
+
+// Supported mobile browsers
+$cfg-support-android:         0 !default;
+$cfg-support-blackberry:      0 !default;
+$cfg-support-firefox-mobile:  0 !default;
+$cfg-support-opera-mini:      0 !default;
+$cfg-support-opera-mobile:    0 !default;
+$cfg-support-safari-ios:      0 !default;
