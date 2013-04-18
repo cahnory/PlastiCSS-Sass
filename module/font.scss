@@ -1,0 +1,106 @@
+$cfg-dir-font: '../font/' !default;
+
+// Monospace
+$font-monaco:
+   Monaco
+  ,"Bitstream Vera Sans Mono"
+  ,"Lucida Console"
+  ,Terminal
+  ,monospace;
+$font-courier:
+   "Courier New"
+  ,Courier
+  ,monospace;
+
+$font-monospace: $font-monaco;
+
+// Sans-serif
+$font-arial:
+   Arial
+  ,"Arial Unicode MS"
+  ,Helvetica
+  ,MyriadPro
+  ,Freesans
+  ,"Nimbus Sans L"
+  ,"Liberation Sans"
+  ,sans-serif;
+$font-lucida:
+   "Lucida Sans"
+  ,"Lucida Grande"
+  ,$font-arial;
+
+$font-sans-serif:  $font-arial;
+
+// !Serif
+$font-georgia:
+   Georgia
+  ,"New Century Schoolbook"
+  ,"Nimbus Roman No9 L"
+  ,serif;
+
+$font-serif: $font-arial;
+
+
+// Return font-size to apply to html element
+//
+// Assure to set rem size as desired.
+//
+// <code>
+//   html { font-size: rem-base() }
+// </code>
+//
+// @param number $size
+// @return number
+@function rem-base($size: $cfg-rem-size) {
+  @return (100%/16) * removeUnit($size);
+}
+
+// Return font-size to apply to body element
+// 
+// Assure to set em size as desired assuming
+// rem-base was applied to html element.
+//
+// <code>
+//   html { font-size: rem-base() }
+//   body { font: em-base()/1.5 $font-sans-serif; }
+// </code>
+//
+// @param number $size em unit size in pixel
+// @param number $rem  rem unit size in pixel
+// @return number
+@function em-base($size: $cfg-em-size, $rem: $cfg-rem-size) {
+  @return removeUnit($size / $rem) + em;
+}
+
+
+// Declare font-face
+//
+// The usage of list as font-face package
+// is recommended:
+// <code>
+//   @include font-face($font-package...);
+// </code>
+//
+// @param string $family family name
+// @param string $file   filename without extension
+// @param string $idSvg  svg id
+// @param mixed  $weight font-weight
+// @param string $style  font-style
+// @param string $param  parameters to add to filenames
+// @return number
+@mixin font-face($family, $file, $idSvg, $weight: normal, $style: normal, $param: null) {
+  $ieParam: $param;
+  @if type-of($param) == string and $param != '' {
+    $param: '?' + $param;
+  }
+  @font-face {
+    font-family: $family;
+    src: url('#{$file}.eot#{$param}');
+    src: url('#{$file}.eot?#{$ieParam}#iefix') format('embedded-opentype'),
+         url('#{$file}.woff#{$param}') format('woff'),
+         url('#{$file}.ttf#{$param}') format('truetype'),
+         url('#{$file}.svg#{$param}##{$idSvg}') format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}

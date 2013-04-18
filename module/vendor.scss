@@ -1,10 +1,10 @@
 @mixin vendor-prefix($property, $values, $prefixes: (webkit, moz, o, none)) {
   @each $prefix in $prefixes {
     @if $prefix != none {
-      @include autoRem(-#{$prefix}-#{$property}, $values...);
+      @include rem(-#{$prefix}-#{$property}, $values...);
     }
     @else {
-      @include autoRem($property, $values...);
+      @include rem($property, $values...);
     }
   }
 }

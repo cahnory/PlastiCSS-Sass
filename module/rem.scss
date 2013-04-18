@@ -1,16 +1,6 @@
-$cfg-rem-size:  10px !default;
-$cfg-rem-px:    1px !default;
+$cfg-rem-size:  1px !default;
 $cfg-rem-auto:  true !default;
-
-$rem-font-size: 100% / 16px * $cfg-rem-size;
-
-// Remove number unit
-//
-// @param number $value
-// @return number
-@function removeUnit($value) {
-  @return $value / ($value * 0 + 1);
-}
+$cfg-em-size:   16px !default;
 
 // Convert single re value to px
 //
@@ -94,18 +84,11 @@ $rem-font-size: 100% / 16px * $cfg-rem-size;
 // an alternate declaration version is set with rem 
 // values converted to px.
 @mixin rem($property, $rem...) {
-  $px: toPx($rem...);
-  @if $px != $rem {
-    #{$property}: $px;
+  @if $cfg-rem-auto {
+    $px: toPx($rem...);
+    @if $px != $rem {
+      #{$property}: $px;
+    }
   }
   #{$property}: $rem;
-}
-
-@mixin autoRem($property, $rem...) {
-  @if $cfg-rem-auto {
-    @include rem($property, $rem...);
-  }
-  @else {
-    #{$property}: $rem;
-  }
 }
