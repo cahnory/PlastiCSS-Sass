@@ -1,0 +1,92 @@
+// Searches the list for a given value and returns the
+// corresponding key or FALSE if not found.
+//
+// @param list   $list
+// @return mixed
+@function inList($list, $value) {
+  $i: 1;
+  @each $v in $list {
+    @if $v == $value {
+      @return $i;
+    }
+    $i: $i + 1;
+  }
+  @return FALSE;
+}
+
+// Returns the value of the last element or FALSE for empty list.
+//
+// @param list   $list
+// @return mixed
+@function last($list) {
+  $l: length($list);
+  @if $l > 0 {
+    @return nth($list, $l);
+  }
+
+  @return FALSE;
+}
+
+// Extract a slice of the list
+//
+// Returns the sequence of elements from the list as
+// specified by the offset and length parameters.
+//
+// @param list   $list
+// @param number $offset
+// @param number $length
+// @return list
+@function slice($list, $offset, $length: -1) {
+  $new: ();
+  $l: length($list);
+  $limit: $offset + $length - 1;
+
+  @while $offset <= $l {
+    $new: append($new, nth($list, $offset));
+    @if($offset == $limit) {
+      @return $new;
+    }
+    $offset: $offset + 1;
+  }
+
+  @if length($new) == 0 {
+    @return null;
+  }
+
+  @return $new;
+}
+
+// Remove a portion of the list and replace it with something else
+//
+// Removes the elements designated by offset and length
+// from the input list, and replaces them with the elements
+// of the replacement list, if supplied.
+//
+// Returns the modified list.
+//
+// @param list   $list
+// @param number $offset
+// @param number $length
+// @param list   $replacement
+// @return list
+@function splice($list, $offset, $length, $replacement: null) {
+  $new: join(slice($list, 1, $offset - 1), $replacement);
+  @return join($new, slice($list, $offset + $length));
+}
+
+@function implode($list, $join, $deep: FALSE) {
+  $joined: '';
+  $i: 0;
+  @each $value in $list {
+    @if $i != 0 {
+      $joined: $joined + $join;
+    }
+    @if $deep != FALSE and length($value) > 1 {
+      $value: implode($value, $join, TRUE);
+    }
+    $joined: $joined + $value;
+    $i: $i + 1;
+  }
+
+  @return $joined;
+}

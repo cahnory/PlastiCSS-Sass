@@ -1,0 +1,57 @@
+/// Number functions
+// + removeUnit()
+// + changeUnit()
+// + pow($value, $exp)
+// + pi()
+
+// Remove number unit
+//
+// @param number $value
+// @return number
+@function removeUnit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+// Change number unit
+//
+// @param number $value
+// @param string $unit  the new unit
+// @return number
+@function changeUnit($value, $unit) {
+  @return removeUnit($value) + $unit;
+}
+
+// Return value raised to the power of exp
+//
+// @param number $value
+// @param number $exp   integer exponent
+// @return number
+@function pow($value, $exp) {
+  @if $exp >= 0 {
+    $i: 1;
+    $x: $value;
+    @while $i < $exp {
+      $x: $x * $value;
+      $i: $i + 1;
+    }
+  }
+  @else if $value == 0 {
+    $x: null;
+  }
+  @else {
+    $i: 0;
+    $x: 1;
+    @while $i > $exp {
+      $x: $x / $value;
+      $i: $i - 1;
+    }
+  }
+  @return $x;
+}
+
+// Returns an approximation of pi
+//
+// @return number
+@function pi() {
+  @return 3.14159265358979323846;
+}
