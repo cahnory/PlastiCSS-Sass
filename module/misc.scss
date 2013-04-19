@@ -45,3 +45,34 @@
 %clear-both {
   @include clear(both);
 }
+
+// Prevent element and children margin to collapse
+@mixin margin-hold($side: both) {
+  $selector: FALSE;
+  @if $side == both {
+    $selector: '&:before, &:after';
+  }
+  @else if $side == top {
+    $selector: '&:before';
+  }
+  @else if $side == bottom {
+    $selector: '&:after';
+  }
+
+  @if $selector != FALSE {
+    #{$selector} {
+      content: $utf-nbsp;
+      display: block;
+      height: 0;
+    }
+  }
+}
+%margin-hold {
+  @include margin-hold();
+}
+%margin-hold-top {
+  @include margin-hold(top);
+}
+%margin-hold-bottom {
+  @include margin-hold(bottom);
+}
