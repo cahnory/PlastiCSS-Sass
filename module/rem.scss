@@ -23,8 +23,9 @@ $cfg-rem-auto:  true !default;
 
 // Convert any px value in the list to rem
 //
-// @param number $value
-// @return number
+// @param list $list
+// @param list $rest (catch multiple values)
+// @return list
 @function toRem($list, $rest...) {
   $output: $list;
 
@@ -62,10 +63,11 @@ $cfg-rem-auto:  true !default;
 
 // Convert any rem value in the list to px
 //
-// @param number $value
-// @return number
+// @param list $list
+// @param list $rest (catch multiple values)
+// @return list
 @function toPx($list, $rest...) {
-  $output: $list;
+  $output: null;
 
   // Single value
   @if length($list) == 1 {
@@ -88,15 +90,48 @@ $cfg-rem-auto:  true !default;
   @return $output;
 }
 
+// Search for a unit usage in values
+//
+// @param string $unit
+// @param list   $list
+// @param list   $rest (catch multiple values)
+// @return number
+@function hasUnit($unit, $list, $rest...) {
+  // Single value
+  @if length($list) == 1 {
+    @return type-of($list) == 'number' and unit($list) == $unit;
+  }
+
+  // Spaced values
+  @else {
+    @each $value in $list {
+      @if hasUnit($unit, $value) {
+        @return true;
+      }
+    }
+  }
+
+  // Comma separated values
+  @each $value in $rest {
+    @if hasUnit($unit, $value) {
+      @return true;
+    }
+  }
+
+  @return false;
+}
+
 // Set a property. If values list contains rem values, 
 // an alternate declaration version is set with rem 
 // values converted to px.
-@mixin rem($property, $rem...) {
-  @if $cfg-rem-auto {
-    $px: toPx($rem...);
-    @if $px != $rem {
-      #{$property}: $px;
-    }
+//
+// @param string $property property name
+// @param list   $rem      property values
+// @return list
+@mixin rem($property, $value...) {
+  @if $cfg-rem-auto
+  and hasUnit('rem', $value...) {
+    #{$property}: toPx($value...);
   }
-  #{$property}: $rem;
+  #{$property}: $value;
 }
