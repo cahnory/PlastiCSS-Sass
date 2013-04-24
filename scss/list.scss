@@ -1,5 +1,5 @@
 // Searches the list for a given value and returns the
-// corresponding key or FALSE if not found.
+// corresponding key or false if not found.
 //
 // @param list   $list
 // @return mixed
@@ -11,10 +11,10 @@
     }
     $i: $i + 1;
   }
-  @return FALSE;
+  @return false;
 }
 
-// Returns the value of the last element or FALSE for empty list.
+// Returns the value of the last element or false for empty list.
 //
 // @param list   $list
 // @return mixed
@@ -24,7 +24,7 @@
     @return nth($list, $l);
   }
 
-  @return FALSE;
+  @return false;
 }
 
 // Extract a slice of the list
@@ -36,13 +36,13 @@
 // @param number $offset
 // @param number $length
 // @return list
-@function slice($list, $offset, $length: -1) {
+@function slice($list, $offset, $length: -1, $separator: auto) {
   $new: ();
   $l: length($list);
   $limit: $offset + $length - 1;
 
   @while $offset <= $l {
-    $new: append($new, nth($list, $offset));
+    $new: append($new, nth($list, $offset), $separator);
     @if($offset == $limit) {
       @return $new;
     }
@@ -69,20 +69,39 @@
 // @param number $length
 // @param list   $replacement
 // @return list
-@function splice($list, $offset, $length, $replacement: null) {
-  $new: join(slice($list, 1, $offset - 1), $replacement);
-  @return join($new, slice($list, $offset + $length));
+@function splice($list, $offset, $length, $replacement: false, $separator: auto) {
+  $new: slice($list, 1, $offset - 1);
+  @if $replacement != false {
+    $new: append($new, $replacement);
+  }
+  @return join($new, slice($list, $offset + $length, $separator), $separator);
 }
 
-@function implode($list, $join, $deep: FALSE) {
+@function replace($list, $key, $value, $separator: auto) {
+  @if $key <= length($list) {
+    @return splice($list, $key, 1, $value, $separator);
+  }
+  @else {
+    @return append(pad($list, $key - 1, null), $value, $separator);
+  }
+}
+
+@function pad($list, $length, $value: null, $separator: auto) {
+  @while length($list) < $length {
+    $list: append($list, $value, $separator);
+  }
+  @return $list;
+}
+
+@function implode($list, $join, $deep: false) {
   $joined: '';
   $i: 0;
   @each $value in $list {
     @if $i != 0 {
       $joined: $joined + $join;
     }
-    @if $deep != FALSE and length($value) > 1 {
-      $value: implode($value, $join, TRUE);
+    @if $deep != false and length($value) > 1 {
+      $value: implode($value, $join, true);
     }
     $joined: $joined + $value;
     $i: $i + 1;
