@@ -48,7 +48,7 @@
 
 // Prevent element and children margin to collapse
 @mixin margin-hold($side: both) {
-  $selector: FALSE;
+  $selector: false;
   @if $side == both {
     $selector: '&:before, &:after';
   }
@@ -59,7 +59,7 @@
     $selector: '&:after';
   }
 
-  @if $selector != FALSE {
+  @if $selector != false {
     #{$selector} {
       content: $utf-nbsp;
       display: block;
@@ -75,4 +75,23 @@
 }
 %margin-hold-bottom {
   @include margin-hold(bottom);
+}
+
+// Set position
+@mixin pin($top: auto, $right: auto, $bottom: auto, $left: auto, $position: absolute) {
+  @if $bottom != auto {
+    bottom: $bottom;
+  }
+  @if $left != auto {
+    left: $left;
+  }
+  @if $position != auto {
+    position: $position;
+  }
+  @if $right != auto {
+    right: $right;
+  }
+  @if $top != auto {
+    top: $top;
+  }
 }
