@@ -101,7 +101,12 @@ $support-properties-prefixes: (0);
   @if $prefix != false
   and inList($prefixes, $prefix) == false
   and support-needed($version, $breakpoint) {
-    $prefixes: join($prefixes, $prefix, space);
+    @if $prefixes == null {
+      $prefixes: $prefix;
+    }
+    @else {
+      $prefixes: join($prefixes, $prefix, space);
+    }
     $support-properties-prefixes: replace($support-properties-prefixes, $key, $prefixes, comma);
   }
 
@@ -110,10 +115,8 @@ $support-properties-prefixes: (0);
 
 @mixin support-prefix-property($property, $values, $prefixes, $std: after) {
   @if $std == before { @include rem($property, $values...) }
-  @each $prefix in $prefixes {
-    @if $prefix != null
-    and $prefix != ''
-    and $prefix != false {
+  @if $prefixes != null {
+    @each $prefix in $prefixes {
       @include rem(-#{$prefix}-#{$property}, $values...);
     }
   }
