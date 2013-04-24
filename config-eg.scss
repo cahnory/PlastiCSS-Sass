@@ -1,9 +1,14 @@
 // Rem unit
-$cfg-rem-size:                1px;
+$cfg-rem-size:                10px;
 $cfg-rem-auto:                true !default;
 
 // Em unit
 $cfg-em-size:                 16px !default;
+
+// Media-query breakpoints (min device width)
+$cfg-media-large:             1024px !default;
+$cfg-media-medium:            640px !default;
+$cfg-media-small:             0 !default;
 
 // Supported desktop browsers
 $cfg-support-chrome:          0 !default;

@@ -1,0 +1,36 @@
+$cfg-media-large:   1024px !default;
+$cfg-media-medium:  640px !default;
+$cfg-media-small:   0 !default;
+
+@function media-query($type) {
+  $query: $type;
+  @if $type == normal {
+    $query: '(min-width: #{$cfg-media-large})';
+  }
+  @else if $query == lt-normal {
+    $query: '(max-width: #{$cfg-media-large - 1})';
+  }
+  @else if $query == lte-normal {
+    // all media only if media queries are supported
+    $query: '(min-width: 0px)';
+  }
+  @else if $query == medium {
+    $query: '(min-width: #{$cfg-media-medium}) and (max-width: #{$cfg-media-large - 1})';
+  }
+  @else if $query == lte-medium {
+    $query: '(max-width: #{$cfg-media-large - 1})';
+  }
+  @else if $query == lt-medium or $query == small {
+    $query: '(max-width: #{$cfg-media-medium - 1})';
+  }
+  @else if $query == retina {
+    // Retina (picked from: KNACSS by Raphaël Goetter - http://knacss.com)
+    $query: '(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi), (min-resolution: 2dppx)';
+  }
+  
+  @return $query;
+}
+
+@mixin media($type) {
+  @media #{media-query($type)} { @content }
+}
