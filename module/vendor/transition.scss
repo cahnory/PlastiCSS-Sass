@@ -1,0 +1,50 @@
+// Mixins
+// ======
+//
+// transition()
+// transition-delay()
+// transition-duration()
+// transition-property()
+// transition-timing-function()
+//
+@mixin transition($value...) {
+  @include support-apply-prefix(transition, $value, $as: transition);
+}
+@mixin transition-delay($value...) {
+  @include support-apply-prefix(transition-delay, $value, $as: transition);
+}
+@mixin transition-duration($value...) {
+  @include support-apply-prefix(transition-duration, $value, $as: transition);
+}
+@mixin transition-property($value...) {
+  @include support-apply-prefix(transition-property, $value, $as: transition);
+}
+@mixin transition-timing-function($value...) {
+  @include support-apply-prefix(transition-timing-function, $value, $as: transition);
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 26
+// Firefox              all
+// Safari             < 5.1
+//
+// Mobile
+// -------
+// Android            < 4
+// Blackberry         < 10
+// Safari iOS         < 5
+//
+$support-tmp: support-property(transition, android);
+$support-tmp: support-property(transition, blackberry);
+$support-tmp: support-property(transition, chrome,          26);
+$support-tmp: support-property(transition, firefox,         16);
+$support-tmp: support-property(transition, firefox-mobile,  16);
+$support-tmp: support-property(transition, opera,           12 5);
+$support-tmp: support-property(transition, opera-mini,      12 5);
+$support-tmp: support-property(transition, safari);
+$support-tmp: support-property(transition, safari-ios);

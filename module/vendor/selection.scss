@@ -1,0 +1,25 @@
+// Mixins
+// ======
+//
+// selection()
+//
+@mixin selection($base: '') {
+  $prefixes: support-getPropertyPrefixes('::selection');
+  @each $prefix in $prefixes {
+    $selector: $base + '::-#{$prefix}-selection';
+    #{$selector} { @content }
+  }
+
+  $selector: $base + '::selection';
+  #{$selector} { @content }
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Firefox              all
+//
+$support-tmp: support-property('::selection', firefox);

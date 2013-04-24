@@ -1,0 +1,50 @@
+// Mixins
+// ======
+//
+// placeholder()
+//
+@mixin placeholder($base: '') {
+  $prefixes: support-getPropertyPrefixes('::input-placeholder');
+  @each $prefix in $prefixes {
+    $selector: $base + '::-#{$prefix}-input-placeholder';
+    #{$selector} { @content }
+  }
+
+  $prefixes: support-getPropertyPrefixes(':placeholder');
+  @each $prefix in $prefixes {
+    $selector: $base + ':-#{$prefix}-placeholder';
+    #{$selector} { @content }
+  }
+
+  $prefixes: support-getPropertyPrefixes(':input-placeholder');
+  @each $prefix in $prefixes {
+    $selector: $base + ':-#{$prefix}-input-placeholder';
+    #{$selector} { @content }
+  }
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 9
+// Firefox              all
+// Safari             < 5.1
+//
+// Mobile
+// -------
+// Android            < 4
+// Blackberry         < 10
+// Safari iOS         < 5
+//
+$support-tmp: support-property('::input-placeholder', android);
+$support-tmp: support-property('::input-placeholder', chrome);
+$support-tmp: support-property('::input-placeholder', android);
+$support-tmp: support-property('::input-placeholder', firefox);
+$support-tmp: support-property('::input-placeholder', safari);
+$support-tmp: support-property('::input-placeholder', safari-ios);
+
+$support-tmp: support-property(':placeholder',  firefox, 19);
+$support-tmp: support-property(':input-placeholder',  ie);

@@ -1,0 +1,20 @@
+// Mixins
+// ======
+//
+// tab-size()
+//
+@mixin tab-size($value...) {
+  @include support-apply-prefix(tab-size, $value);
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Firefox              all
+// Opera                all
+//
+$support-tmp: support-property(tab-size, firefox);
+$support-tmp: support-property(tab-size, opera);
