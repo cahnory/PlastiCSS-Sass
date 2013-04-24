@@ -1,0 +1,39 @@
+@mixin triangle($direction, $width, $color: null) {
+  @include triangle-base($width);
+  @include triangle-color($direction, $width, $color);
+}
+
+@mixin triangle-base($width) {
+  @include rem(border, $width transparent solid);
+  display: block;
+  height: 0;
+  width: 0;
+}
+
+@mixin triangle-color($direction, $width, $color: null) {
+  $border: false;
+  // Border to apply color
+  @if $direction == top {
+    $border: bottom;
+  }
+  @else if $direction == right {
+    $border: left;
+  }
+  @else if $direction == bottom {
+    $border: top;
+  }
+  @else if $direction == left {
+    $border: right;
+  }
+
+  @if $border != false {
+    // Use provided color
+    @if type-of($color) == color {
+      border-#{$border}-color: $color;
+    }
+    // Use text color
+    @else {
+      @include rem(border-#{$border}, $width solid);
+    }
+  }
+}

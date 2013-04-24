@@ -8,5 +8,6 @@
 
 @import 'module/font.scss';       // Dependencies: rem
 @import 'module/support.scss';    // Dependencies: rem
+@import 'module/triangle.scss';   // Dependencies: support, rem
 @import 'module/vendor.scss';     // Dependencies: support, rem
 @import 'module/misc.scss';       // Dependencies: support, unicode
