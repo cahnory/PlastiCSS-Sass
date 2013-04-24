@@ -1,60 +1,141 @@
-// Desktop support
-$cfg-support-chrome:         0 !default;
-$cfg-support-firefox:        0 !default;
-$cfg-support-ie:             0 !default;
-$cfg-support-opera:          0 !default;
-$cfg-support-safari:         0 !default;
+// Browsers with corresponding vendor prefix
+$support-browsers: (0);
+$support-browsers-prefixes: (0);
+$support-browsers-versions: (0);
 
-// Mobile support
-$cfg-support-android:        0 !default;
-$cfg-support-blackberry:     0 !default;
-$cfg-support-firefox-mobile: 0 !default;
-$cfg-support-opera-mini:     0 !default;
-$cfg-support-opera-mobile:   0 !default;
-$cfg-support-safari-ios:     0 !default;
+// Properties with corresponding vendor prefixes
+$support-properties: (0);
+$support-properties-prefixes: (0);
 
-@function support($supported, $version, $equal: true) {
-  $ls: length($supported);
-  $lv: length($version);
-  $min: min($ls, $lv);
+// Check if supplied version is lower than
+// breakpoint.
+//
+// @param $version    version to test
+// @param $breakpoint first version which does not require support
+//
+// @return bool       true if support is needed
+@function support-needed($version, $breakpoint) {
+  $ls: length($version);
+  $lu: length($breakpoint);
+  $min: min($ls, $lu);
   $i: 1;
 
   // Browser not supported
-  @if $supported == none {
+  @if $version == none {
     @return false;
   }
 
   // Apply to all versions
-  @else if $version == none {
+  @else if $breakpoint == none {
     @return true;
   }
 
   // Check if version is supported
   @while $i <= $min {
-    $s: nth($supported, $i);
-    $v: nth($version, $i);
+    $s: nth($version, $i);
+    $u: nth($breakpoint, $i);
     $i: $i + 1;
 
-    @if $s < $v {
+    @if $s < $u {
       @return true;
     }
-    @else if $s > $v {
+    @else if $s > $u {
       @return false;
     }
   }
 
-  @return $ls < $lv or $equal and $ls == $lv;
+  @return $ls < $lu;
 }
 
-@function support-chrome        ($version, $equal: true)  { @return support($cfg-support-chrome,          $version, $equal) }
-@function support-firefox       ($version, $equal: true)  { @return support($cfg-support-firefox,         $version, $equal) }
-@function support-ie            ($version, $equal: true)  { @return support($cfg-support-ie,              $version, $equal) }
-@function support-opera         ($version, $equal: true)  { @return support($cfg-support-opera,           $version, $equal) }
-@function support-safari        ($version, $equal: true)  { @return support($cfg-support-safari,          $version, $equal) }
+@function support-getBrowserKey($name, $version: none, $prefix: false, $auto: true) {
+  $key: inList($support-browsers, $name);
 
-@function support-android       ($version, $equal: true)  { @return support($cfg-support-android,         $version, $equal) }
-@function support-blackberry    ($version, $equal: true)  { @return support($cfg-support-blackberry,      $version, $equal) }
-@function support-firefox-mobile($version, $equal: true)  { @return support($cfg-support-firefox-mobile,  $version, $equal) }
-@function support-opera-mini    ($version, $equal: true)  { @return support($cfg-support-opera-mini,      $version, $equal) }
-@function support-opera-mobile  ($version, $equal: true)  { @return support($cfg-support-opera-mobile,    $version, $equal) }
-@function support-safari-ios    ($version, $equal: true)  { @return support($cfg-support-safari-ios,      $version, $equal) }
+  @if $key == false and $auto {
+    $support-browsers:           append($support-browsers, $name, comma);
+    $support-browsers-prefixes:  append($support-browsers-prefixes, $prefix, comma);
+    $support-browsers-versions:  append($support-browsers-versions, $version, comma);
+    $key: length($support-browsers);
+  }
+
+  @return $key;
+}
+@function support-browser($name, $version: 0, $prefix: false) {
+  $key: inList($support-browsers, $name);
+
+  @if $key == false {
+    $key: support-getBrowserKey($name, $version, $prefix);
+  }
+  @else {
+    $support-browsers-prefixes:  replace($support-browsers-prefixes, $key, $prefix, comma);
+    $support-browsers-versions:  replace($support-browsers-versions, $key, $version, comma);
+  }
+
+  @return $key;
+}
+
+@function support-getPropertyKey($name) {
+  $key: inList($support-properties, $name);
+
+  @if $key == false {
+    $support-properties:           append($support-properties, $name, comma);
+    $support-properties-prefixes:  append($support-properties-prefixes, null, comma);
+    $key: length($support-properties);
+  }
+
+  @return $key;
+}
+@function support-getPropertyPrefixes($name) {
+  $key: support-getPropertyKey($name);
+  @return nth($support-properties-prefixes, $key);
+}
+@function support-property($name, $browser, $breakpoint: none) {
+  // Browser
+  $key: support-getBrowserKey($browser);
+  $prefix:  nth($support-browsers-prefixes, $key);
+  $version: nth($support-browsers-versions, $key);
+
+  // Property
+  $key: support-getPropertyKey($name);
+  $prefixes: nth($support-properties-prefixes, $key);
+
+  @if $prefix != false
+  and inList($prefixes, $prefix) == false
+  and support-needed($version, $breakpoint) {
+    $prefixes: join($prefixes, $prefix, space);
+    $support-properties-prefixes: replace($support-properties-prefixes, $key, $prefixes, comma);
+  }
+
+  @return $key;
+}
+
+@mixin support-prefix-property($property, $values, $prefixes, $std: after) {
+  @if $std == before { @include rem($property, $values...) }
+  @each $prefix in $prefixes {
+    @if $prefix != null
+    and $prefix != ''
+    and $prefix != false {
+      @include rem(-#{$prefix}-#{$property}, $values...);
+    }
+  }
+  @if $std == after { @include rem($property, $values...) }
+}
+
+@mixin support-apply-prefix($property, $values, $std: after, $as: $property) {
+  $p: support-getPropertyPrefixes($as);
+  @include support-prefix-property($property, $values, support-getPropertyPrefixes($as), $std);
+}
+
+// Desktop support
+$support-tmp: support-browser(chrome,         0, webkit);
+$support-tmp: support-browser(firefox,        0, moz);
+$support-tmp: support-browser(ie,             0, ie);
+$support-tmp: support-browser(opera,          0, o);
+$support-tmp: support-browser(safari,         0, webkit);
+
+// Mobile support
+$support-tmp: support-browser(android,        0, webkit);
+$support-tmp: support-browser(blackberry,     0, webkit);
+$support-tmp: support-browser(firefox-mobile, 0, moz);
+$support-tmp: support-browser(opera-mini,     0, o);
+$support-tmp: support-browser(opera-mobile,   0, o);
+$support-tmp: support-browser(safari-ios,     0, webkit);

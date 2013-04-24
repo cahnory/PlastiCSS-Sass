@@ -1,38 +1,65 @@
-// @module vendor:border-radius
+// Mixins
+// ======
 //
-// @mixin border-radius
-
-// Return used prefixes list
-@function vendor-border-radius-prefixes() {
-  $prefixes: ();
-  
-  // Add "webkit" prefix if needed
-  @if support-chrome(4, false)
-   or support-safari(5, false)
-   or support-android((2,2), false)
-   or support-safari-ios(4, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(4, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
-
-// Mixin
+// border-radius()
+// border-top-radius()
+// border-top-right-radius()
+// border-right-radius()
+// border-bottom-right-radius()
+// border-bottom-radius()
+// border-bottom-left-radius()
+// border-left-radius()
+// border-top-left-radius()
+//
 @mixin border-radius($value...) {
-  @include vendor-prefix(
-    border-radius,
-    $value,
-    vendor-border-radius-prefixes()
-  );
+  @include support-apply-prefix(border-radius, $value);
 }
+@mixin border-top-right-radius($value...) {
+  @include support-apply-prefix(border-top-right-radius, $value, $as: border-radius);
+}
+@mixin border-bottom-right-radius($value...) {
+  @include support-apply-prefix(border-bottom-right-radius, $value, $as: border-radius);
+}
+@mixin border-bottom-left-radius($value...) {
+  @include support-apply-prefix(border-bottom-left-radius, $value, $as: border-radius);
+}
+@mixin border-top-left-radius($value...) {
+  @include support-apply-prefix(border-top-left-radius, $value, $as: border-radius);
+}
+@mixin border-top-radius($value...) {
+  @include border-top-left-radius($value...);
+  @include border-top-right-radius($value...);
+}
+@mixin border-right-radius($value...) {
+  @include border-top-right-radius($value...);
+  @include border-bottom-right-radius($value...);
+}
+@mixin border-bottom-radius($value...) {
+  @include border-bottom-left-radius($value...);
+  @include border-bottom-right-radius($value...);
+}
+@mixin border-left-radius($value...) {
+  @include border-top-left-radius($value...);
+  @include border-bottom-left-radius($value...);
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 4
+// Firefox            < 4
+// Safari             < 5
+//
+// Mobile
+// -------
+// Android            < 2.2
+// Safari iOS         < 4
+//
+$support-tmp: support-property(border-radius, android,    2 2);
+$support-tmp: support-property(border-radius, chrome,     4);
+$support-tmp: support-property(border-radius, firefox,    4);
+$support-tmp: support-property(border-radius, safari,     5);
+$support-tmp: support-property(border-radius, safari-ios, 4);

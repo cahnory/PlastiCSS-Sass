@@ -1,38 +1,29 @@
-// @module vendor:box-shadow
+// Mixins
+// ======
 //
-// @mixin box-shadow
-
-// Return used prefixes list
-@function vendor-box-shadow-prefixes() {
-  $prefixes: ();
-
-  // Add "webkit" prefix if needed
-  @if support-chrome(10, false)
-   or support-safari((5,1), false)
-   or support-android(4, false)
-   or support-blackberry(10, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(4, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
-
-// Mixin
+// box-shadow()
+//
 @mixin box-shadow($value...) {
-  @include vendor-prefix(
-    box-shadow,
-    $value,
-    vendor-box-shadow-prefixes()
-  );
+  @include support-apply-prefix(box-shadow, $value);
 }
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 10
+// Firefox            < 4
+// Safari             < 5.1
+//
+// Mobile
+// -------
+// Android            < 4
+// Blackberry         < 10
+//
+$support-tmp: support-property(box-shadow, android,    4);
+$support-tmp: support-property(box-shadow, blackberry, 10);
+$support-tmp: support-property(box-shadow, chrome,     10);
+$support-tmp: support-property(box-shadow, firefox,    4);
+$support-tmp: support-property(box-shadow, safari,     5 1);

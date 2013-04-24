@@ -1,34 +1,37 @@
-// @module vendor:column
-//
-// @mixin align-content
-// @mixin align-items
-// @mixin align-self
-
-// Return used prefixes list
-@function vendor-align-prefixes() {
-  @return (webkit, none);
-}
-
-
 // Mixins
+// ======
+//
+// align-content()
+// align-items()
+// align-self()
+//
 @mixin align-content($value...) {
-  @include vendor-prefix(
-    align-content,
-    $value,
-    vendor-align-prefixes()
-  );
+  @include support-apply-prefix(align-content, $value, $as: align-);
 }
 @mixin align-items($value...) {
-  @include vendor-prefix(
-    align-items,
-    $value,
-    vendor-align-prefixes()
-  );
+  @include support-apply-prefix(align-items, $value, $as: align-);
 }
 @mixin align-self($value...) {
-  @include vendor-prefix(
-    align-self,
-    $value,
-    vendor-align-prefixes()
-  );
+  @include support-apply-prefix(align-self, $value, $as: align-);
 }
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome               all
+// Safari               all
+//
+// Mobile
+// -------
+// Android              all
+// Blackberry           all
+// Safari iOS           all
+//
+$support-tmp: support-property(align, android);
+$support-tmp: support-property(align, blackberry);
+$support-tmp: support-property(align, chrome);
+$support-tmp: support-property(align, safari);
+$support-tmp: support-property(align, safari-ios);

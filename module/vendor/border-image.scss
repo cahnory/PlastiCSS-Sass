@@ -1,126 +1,71 @@
-// @module vendor:border-image
-//
-// @mixin border-image
-// @mixin border-top-image
-// @mixin border-top-right-image
-// @mixin border-right-image
-// @mixin border-bottom-right-image
-// @mixin border-bottom-image
-// @mixin border-bottom-left-image
-// @mixin border-left-image
-// @mixin border-top-left-image
-// @mixin border-corder-image
-
-// Return used prefixes list
-@function vendor-border-image-prefixes() {
-  $prefixes: ();
-  
-  // Add "webkit" prefix if needed
-  @if support-chrome(20, false)
-   or support-safari(6, false)
-   or support-android(none, false)
-   or support-blackberry(10, false)
-   or support-safari-ios(none, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(15, false)
-   or support-firefox-mobile(none, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Add "o" prefix if needed
-  @if support-opera(none, false)
-  {
-    $prefixes: append($prefixes, o);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
 // Mixins
+// ======
+//
+// border-image()
+// border-top-image()
+// border-top-right-image()
+// border-right-image()
+// border-bottom-right-image()
+// border-bottom-image()
+// border-bottom-left-image()
+// border-left-image()
+// border-top-left-image()
+// border-corner-image()
+//
 @mixin border-image($value...) {
-  @include vendor-prefix(
-    border-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-image, $value);
 }
-
 @mixin border-top-image($value...) {
-  @include vendor-prefix(
-    border-top-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-top-image, $value, $as: border-image);
 }
-
 @mixin border-top-right-image($value...) {
-  @include vendor-prefix(
-    border-top-right-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-top-right-image, $value, $as: border-image);
 }
-
 @mixin border-right-image($value...) {
-  @include vendor-prefix(
-    border-right-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-right-image, $value, $as: border-image);
 }
-
 @mixin border-bottom-right-image($value...) {
-  @include vendor-prefix(
-    border-bottom-right-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-bottom-right-image, $value, $as: border-image);
 }
-
 @mixin border-bottom-image($value...) {
-  @include vendor-prefix(
-    border-bottom-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-bottom-image, $value, $as: border-image);
 }
-
 @mixin border-bottom-left-image($value...) {
-  @include vendor-prefix(
-    border-bottom-left-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-bottom-left-image, $value, $as: border-image);
 }
-
 @mixin border-left-image($value...) {
-  @include vendor-prefix(
-    border-left-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-left-image, $value, $as: border-image);
 }
-
 @mixin border-top-left-image($value...) {
-  @include vendor-prefix(
-    border-top-left-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
+  @include support-prefix(border-top-left-image, $value, $as: border-image);
+}
+@mixin border-corner-image($value...) {
+  @include support-prefix(border-corner-image, $value, $as: border-image);
 }
 
-@mixin border-corner-image($value...) {
-  @include vendor-prefix(
-    border-corner-image,
-    $value,
-    vendor-border-image-prefixes()
-  );
-}
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 20
+// Firefox            < 15
+// Opera                all
+// Safari             < 6
+//
+// Mobile
+// -------
+// Android              all
+// Blackberry         < 10
+// Firefox mobile       all
+// Safari iOS           all
+//
+$support-tmp: support-property(border-image, android);
+$support-tmp: support-property(border-image, blackberry,      10);
+$support-tmp: support-property(border-image, chrome,          20);
+$support-tmp: support-property(border-image, firefox,         15);
+$support-tmp: support-property(border-image, firefox-mobile);
+$support-tmp: support-property(border-image, opera);
+$support-tmp: support-property(border-image, safari,          6);
+$support-tmp: support-property(border-image, safari-ios);

@@ -1,0 +1,27 @@
+// Mixins
+// ======
+//
+// filter()
+//
+@mixin filter($value...) {
+  @include support-apply-prefix(filter, $value);
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome               all
+// Safari               all
+//
+// Mobile
+// -------
+// Blackberry           all
+// Safari iOS           all
+//
+$support-tmp: support-property(filter, blackberry);
+$support-tmp: support-property(filter, chrome);
+$support-tmp: support-property(filter, safari);
+$support-tmp: support-property(filter, safari-ios);

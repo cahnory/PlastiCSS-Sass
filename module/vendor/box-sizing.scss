@@ -1,38 +1,31 @@
-// @module vendor:box-sizing
+// Mixins
+// ======
 //
-// @mixin box-sizing
-
-// Return used prefixes list
-@function vendor-bos-sizing-prefixes() {
-  $prefixes: ();
-  
-  // Add "webkit" prefix if needed
-  @if support-chrome(9, false)
-   or support-safari((5,1), false)
-   or support-android(4, false)
-   or support-blackberry(10, false)
-   or support-safari-ios(5, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(none, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
-// Mixin
+// box-sizing()
+//
 @mixin box-sizing($value...) {
-  @include vendor-prefix(
-    box-sizing,
-    $value,
-    vendor-bos-sizing-prefixes()
-  );
+  @include support-apply-prefix(box-sizing, $value);
 }
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 9
+// Firefox              all
+// Safari             < 5.1
+//
+// Mobile
+// -------
+// Android            < 4
+// Blackberry         < 10
+// Safari iOS         < 5
+//
+$support-tmp: support-property(box-sizing, android,    4);
+$support-tmp: support-property(box-sizing, blackberry, 10);
+$support-tmp: support-property(box-sizing, chrome,     9);
+$support-tmp: support-property(box-sizing, firefox);
+$support-tmp: support-property(box-sizing, safari,     5 1);
+$support-tmp: support-property(box-sizing, safari-ios, 5);

@@ -1,0 +1,47 @@
+// Mixins
+// ======
+//
+// opacity()
+//
+@mixin opacity($value...) {
+  @include support-apply-prefix(opacity, $value);
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Internet Explorer  < 9
+// Safari             < 2
+//
+$support-tmp: support-property(opacity-lt-ie-8, ie,     8);
+$support-tmp: support-property(opacity,         ie,     9);
+$support-tmp: support-property(opacity,         safari, 2);
+
+// Mixin
+@mixin opacity($value) {
+  $prefixes: support-getPropertyPrefixes(opacity);
+
+  // Std
+  opacity: $value;
+
+  // Safari < 2
+  @if inList($prefixes, webkit) != false {
+    -khtml-opacity: $value;
+  }
+
+  // IE < 9
+  @if inList($prefixes, ie) != false {
+    $prefixes: support-getPropertyPrefixes(opacity-lt-ie-8);
+    $percent: $value * 100;
+
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=#{$percent})";
+
+    // IE < 8
+    @if inList($prefixes, ie) != false {
+      filter: alpha(opacity=$percent);
+    }
+  }
+}

@@ -1,14 +1,3 @@
-@mixin vendor-prefix($property, $values, $prefixes: (webkit, moz, o, none)) {
-  @each $prefix in $prefixes {
-    @if $prefix != none {
-      @include rem(-#{$prefix}-#{$property}, $values...);
-    }
-    @else {
-      @include rem($property, $values...);
-    }
-  }
-}
-
 @import 'vendor/align.scss';
 @import 'vendor/animation.scss';
 @import 'vendor/background-size.scss';
@@ -18,3 +7,5 @@
 @import 'vendor/box-sizing.scss';
 @import 'vendor/column.scss';
 @import 'vendor/display.scss';
+@import 'vendor/filter.scss';
+@import 'vendor/opacity.scss';

@@ -1,42 +1,29 @@
-// @module vendor:background-size
+// Mixins
+// ======
 //
-// @mixin background-size
-
-// Return used prefixes list
-@function vendor-background-size-prefixes() {
-  $prefixes: ();
-  
-  // Add "webkit" prefix if needed
-  @if support-chrome(3, false)
-   or support-safari((4,1), false)
-   or vendor-android(none, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(4, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Add "o" prefix if needed
-  @if support-opera(10, false)
-  {
-    $prefixes: append($prefixes, o);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
-// Mixin
+// background-size()
+//
 @mixin background-size($value...) {
-  @include vendor-prefix(
-    background-size,
-    $value,
-    vendor-background-size-prefixes()
-  );
+  @include support-apply-prefix(background-size, $value);
 }
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome             < 3
+// Firefox            < 4
+// Opera              < 10
+// Safari             < 4.1
+//
+// Mobile
+// -------
+// Android              all
+//
+$support-tmp: support-browser-property(background-size, android);
+$support-tmp: support-browser-property(background-size, chrome,   3);
+$support-tmp: support-browser-property(background-size, firefox,  4);
+$support-tmp: support-browser-property(background-size, opera,    10);
+$support-tmp: support-browser-property(background-size, safari,   4 1);

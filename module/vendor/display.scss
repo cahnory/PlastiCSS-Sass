@@ -1,25 +1,13 @@
-// @module vendor:display
+// Mixins
+// ======
 //
-// @mixin display
-
-// Mixin
+// display()
+// inline-block()
+//
 @mixin display($value...) {
-  // Inline-block workarounds
   @if $value == inline-block {
-    // Firefox < 3
-    @if support-firefox(3, false) {
-      display: -moz-inline-box;
-    }
-    // Standard
-    display: inline-block;
-    // IE < 8
-    @if support-chrome(8, false) {
-      *display: inline;
-      *zoom: 1;
-    }
+    @include inline-block();
   }
-  
-  // Flex: need informations
   @else if $value == flex {
     display: -webkit-box;
     display: -webkit-flex;
@@ -27,8 +15,36 @@
     display: -ms-flexbox;
     display: flex;
   }
-
   @else {
     display: $value;
   }
 }
+@mixin inline-block() {
+  $prefixes: support-getPropertyPrefixes('display:inline-block');
+
+  @if inList($prefixes, moz) != false {
+    display: -moz-inline-box;
+  }
+
+  display: inline-block;
+
+  @if inList($prefixes, ie) != false {
+    *display: inline;
+    *zoom: 1;
+  }
+}
+
+
+// Support definition
+// ==================
+//
+// All                  all (flex)
+// ---
+//
+// Desktop
+// -------
+// Firefox            < 3   (inline-block)
+// Internet Explorer  < 8   (inline-block)
+//
+$support-tmp: support-property('display:inline-block', firefox, 3);
+$support-tmp: support-property('display:inline-block', ie,      8);

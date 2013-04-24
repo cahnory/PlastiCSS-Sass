@@ -1,46 +1,88 @@
-// @module vendor:animation
+// Mixins
+// ======
 //
-// @mixin animation
-
-// Return used prefixes list
-@function vendor-animation-prefixes() {
-  $prefixes: ();
-  
-  // Add "webkit" prefix if needed
-  @if support-chrome(none, false)
-   or support-safari(none, false)
-   or support-android(none, false)
-   or support-blackberry(none, false)
-   or support-safari-ios(none, false)
-  {
-    $prefixes: append($prefixes, webkit);
-  }
-  
-  // Add "moz" prefix if needed
-  @if support-firefox(16, false)
-   or support-firefox-mobile(16, false)
-  {
-    $prefixes: append($prefixes, moz);
-  }
-  
-  // Add "o" prefix if needed
-  @if support-opera((12,10), false)
-  {
-    $prefixes: append($prefixes, o);
-  }
-  
-  // Last but not least: unprefixed
-  $prefixes: append($prefixes, none);
-
-  @return $prefixes;
-}
-
-
-// Mixin
+// animation()
+// animation-delay()
+// animation-direction()
+// animation-duration()
+// animation-fill-mode()
+// animation-iteration-count()
+// animation-name()
+// animation-play-state()
+// animation-timing-function()
+// keyframes() { @content }
+//
 @mixin animation($value...) {
-  @include vendor-prefix(
-    animation,
-    $value,
-    vendor-animation-prefixes()
-  );
+  @include support-apply-prefix(animation, $value, $as: animation-);
 }
+@mixin animation-delay($value...) {
+  @include support-apply-prefix(animation-delay, $value, $as: animation-);
+  @include support-prefix(animation-delay, $value);
+}
+@mixin animation-direction($value...) {
+  @include support-apply-prefix(animation-delay, $value, $as: animation-);
+  @include support-prefix(animation-direction, $value);
+}
+@mixin animation-duration($value...) {
+  @include support-apply-prefix(animation-direction, $value, $as: animation-);
+  @include support-prefix(animation-direction, $value);
+}
+@mixin animation-fill-mode($value...) {
+  @include support-apply-prefix(animation-fill-mode, $value, $as: animation-);
+  @include support-prefix(animation-fill-mode, $value);
+}
+@mixin animation-iteration-count($value...) {
+  @include support-apply-prefix(animation-iteration-count, $value, $as: animation-);
+  @include support-prefix(animation-iteration-count, $value);
+}
+@mixin animation-name($value...) {
+  @include support-apply-prefix(animation-name, $value, $as: animation-);
+  @include support-prefix(animation-name, $value);
+}
+@mixin animation-play-state($value...) {
+  @include support-apply-prefix(animation-play-state, $value, $as: animation-);
+  @include support-prefix(animation-play-state, $value);
+}
+@mixin animation-timing-function($value...) {
+  @include support-apply-prefix(animation-timing-function, $value, $as: animation-);
+}
+@mixin keyframes($name) {
+  $prefixes: support-getPropertyPrefixes(animation-);
+  @if inList($prefixes, webkit) != false {
+    @-webkit-keyframes #{$name} { @content }
+  }
+  @if inList($prefixes, moz) != false {
+    @-moz-keyframes #{$name} { @content }
+  }
+  @if inList($prefixes, o) != false {
+    @-o-keyframes #{$name} { @content }
+  }
+  @keyframes #{$name} { @content }
+}
+
+
+// Support definition
+// ==================
+//
+// Desktop
+// -------
+// Chrome               all
+// Firefox            < 16
+// Opera              < 12.10
+// Safari               all
+//
+// Mobile
+// -------
+// Android              all
+// Blackberry           all
+// Firefox mobile     < 16
+// Safari iOS           all
+//
+$support-tmp: support-property(animation-, android);
+$support-tmp: support-property(animation-, blackberry);
+$support-tmp: support-property(animation-, chrome);
+$support-tmp: support-property(animation-, firefox,         16);
+$support-tmp: support-property(animation-, firefox-mobile,  16);
+$support-tmp: support-property(animation-, opera,           12 10);
+$support-tmp: support-property(animation-, safari);
+$support-tmp: support-property(animation-, safari-ios);
