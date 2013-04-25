@@ -2,6 +2,7 @@
 @import 'PlastiCSS.scss';
 
 // Modules
+@import 'module/fix.scss';        // No dependency
 @import 'module/media.scss';      // No dependency
 @import 'module/rem.scss';        // No dependency
 @import 'module/unicode.scss';    // No dependency
