@@ -109,3 +109,30 @@
 
   @return $joined;
 }
+
+@function intersect($a, $b) {
+  $new: ();
+  @each $value in $a {
+    @if inList($b, $value) != false {
+      $new: append($new, $value);
+    }
+  }
+  @return $new;
+}
+@function diff($a, $b) {
+  $i: 1;
+  $l: max(length($a), length($b));
+  $new: ();
+  @while $i <= $l {
+    $value: nth($a, $i);
+    @if inList($b, $value) == false {
+      $new: append($new, $value);
+    }
+    $value: nth($b, $i);
+    @if inList($a, $value) == false {
+      $new: append($new, $value);
+    }
+    $i: $i + 1;
+  }
+  @return $new;
+}
