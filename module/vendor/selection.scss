@@ -6,9 +6,15 @@
 @mixin selection($base: '') {
   $prefixes: support-getPropertyPrefixes('::selection');
   @each $prefix in $prefixes {
+    // Add prefix filter on current selector prefix
+    $support-tmp: support-limit-prefix($prefix);
+
     $selector: $base + '::-#{$prefix}-selection';
     #{$selector} { @content }
   }
+
+  // Remove prefix filter
+  $support-tmp: support-limit-prefix(false);
 
   $selector: $base + '::selection';
   #{$selector} { @content }

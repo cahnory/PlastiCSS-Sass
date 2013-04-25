@@ -7,6 +7,8 @@ $support-browsers-versions: (0);
 $support-properties: (0);
 $support-properties-prefixes: (0);
 
+$support-limit-prefixes: false;
+
 // Check if supplied version is lower than
 // breakpoint.
 //
@@ -113,6 +115,11 @@ $support-properties-prefixes: (0);
   @return $key;
 }
 
+@function support-limit-prefix($prefix: false) {
+  $support-limit-prefixes: $prefix;
+  @return true;
+}
+
 @mixin support-prefix-property($property, $values, $prefixes, $std: after) {
   @if $std == before { @include rem($property, $values...) }
   @if $prefixes != null {
@@ -123,9 +130,15 @@ $support-properties-prefixes: (0);
   @if $std == after { @include rem($property, $values...) }
 }
 
-@mixin support-apply-prefix($property, $values, $std: after, $as: $property) {
+@mixin support-apply-prefix($property, $values, $std: after, $as: $property, $limit: null) {
   $p: support-getPropertyPrefixes($as);
-  @include support-prefix-property($property, $values, support-getPropertyPrefixes($as), $std);
+  @if $limit != null {
+    $p: intersect($p, $limit);
+  }
+  @if $support-limit-prefixes != false {
+    $p: intersect($p, $support-limit-prefixes);
+  }
+  @include support-prefix-property($property, $values, $p, $std);
 }
 
 // Desktop support

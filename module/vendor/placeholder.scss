@@ -6,21 +6,33 @@
 @mixin placeholder($base: '') {
   $prefixes: support-getPropertyPrefixes('::input-placeholder');
   @each $prefix in $prefixes {
+    // Add prefix filter on current selector prefix
+    $support-tmp: support-limit-prefix($prefix);
+
     $selector: $base + '::-#{$prefix}-input-placeholder';
     #{$selector} { @content }
   }
 
   $prefixes: support-getPropertyPrefixes(':placeholder');
   @each $prefix in $prefixes {
+    // Add prefix filter on current selector prefix
+    $support-tmp: support-limit-prefix($prefix);
+
     $selector: $base + ':-#{$prefix}-placeholder';
     #{$selector} { @content }
   }
 
   $prefixes: support-getPropertyPrefixes(':input-placeholder');
   @each $prefix in $prefixes {
+    // Add prefix filter on current selector prefix
+    $support-tmp: support-limit-prefix($prefix);
+
     $selector: $base + ':-#{$prefix}-input-placeholder';
     #{$selector} { @content }
   }
+
+  // Remove prefix filter
+  $support-tmp: support-limit-prefix(false);
 }
 
 
@@ -29,19 +41,18 @@
 //
 // Desktop
 // -------
-// Chrome             < 9
+// Chrome               all
 // Firefox              all
-// Safari             < 5.1
+// Internet Explorer    all
+// Safari               all
 //
 // Mobile
 // -------
-// Android            < 4
-// Blackberry         < 10
-// Safari iOS         < 5
+// Android              all
+// Safari iOS           all
 //
 $support-tmp: support-property('::input-placeholder', android);
 $support-tmp: support-property('::input-placeholder', chrome);
-$support-tmp: support-property('::input-placeholder', android);
 $support-tmp: support-property('::input-placeholder', firefox);
 $support-tmp: support-property('::input-placeholder', safari);
 $support-tmp: support-property('::input-placeholder', safari-ios);
